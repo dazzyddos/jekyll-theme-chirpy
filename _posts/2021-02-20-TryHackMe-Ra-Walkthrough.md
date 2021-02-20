@@ -48,28 +48,28 @@ PORT      STATE SERVICE
 
 Ufff, that's a lot of ports. I did version scanning in the background. Meanwhile let's start our enumeration with port 80.
 
-![](./Images/01.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/01.png)
 
 There's nothing special on the website, all the tabs and links points to the same home page except for i found few emails.
 
-![image](./images/02.png)
+![image](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/02.png)
 
 Used curl to extract all those emails from the page.
 
-![image3](./images/03.png)
+![image3](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/03.png)
 
 Stored them in a text file, hopefully it would be useful later.
 
 In the source code, found a domain name, let's put it inside our hosts file.
-![image4](./images/04.png)
+![image4](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/04.png)
 
-![image5](./images/05.png)
+![image5](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/05.png)
 
 ## Reset Password of Lily
 
 Now let's visit that **reset.asp** page mentioned in the source code.
 
-![image6](./images/06.png)
+![image6](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/06.png)
 
 mmmm, looks like some reset password page, come'on dazzy, your readers are not fool.
 
@@ -88,15 +88,15 @@ Anyways, let's continue. So, let me tell you what all i did in that reset page:
 So after getting tired, i went to meet my girlfriend which obviously doesn't exist :pepeface: , wait why am i telling this to you :P
 
 Anyways, so after that what i did was went little backwards and continued my web enumeration. I had completely forgotten that the webpage also consisted of employee names and images.
-![employeeimage](./images/07.png)
+![employeeimage](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/07.png)
 
 I first cross checked their names in the email list and it was not existing there, so i did the above steps again with these usernames now but it again didn't work out.
 
 Let me tell you, i like puppies and pussies (obviously cat :P) . That puppy in the picture caugth my attention, i thought i could get some meta data from that image but it was easier, i got the name of the lady and her pet from the image name.
-![ladywithpuppy](./images/08.png)
+![ladywithpuppy](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/08.png)
 
 So, we could finally reset the password with it.
-![resetpass](./images/09.png)
+![resetpass](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/09.png)
 
 I have redacted the pass because i want you to follow with me you lazy **hacker** 
 
@@ -111,35 +111,35 @@ We have had **SMB** port open.
 ```
 
 Let's use **crackmapexec** to see if the pass we found is valid. We are using *cme* tool here because if the username lily doesn't work for the password we found, we can load the usernames from the email list we had previously grabbed.
-![](./images/10.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/10.png)
 
 As can be seen, that credentials was valid for the smb.
 Now, let's see if we have any interesting files.
-![](./images/11.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/11.png)
 
 We got our first flag. There's some program residing in that directory. Google tells us it's some kind of Instant Messaging Software.
-![](./images/12.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/12.png)
 
 ## Spark IM enumeration and exploitation
 
 Let's go back to our port scan info and see if there's any matching service for it.
-![](./images/13.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/13.png)
 
 So, yeap, there's an Jabber service running at port 5222.
 Let's install the exact version of **spark IM** on our machine.
-![](./images/14.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/14.png)
 
 Let's login with the creds we have.
-![](./images/15.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/15.png)
 
 I got some certificate error.
-![](./images/16.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/16.png)
 
 I then went to the advanced settings and disabled these options.
-![](./images/17.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/17.png)
 
 And then i was able to login. During the enumeration phase, i had come across the below website which mentions about the vulnerability in this specific version of spark IM.
-![](./images/18.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/18.png)
 
 ```
 Vulnerability Summary
@@ -156,36 +156,36 @@ https://github.com/theart42/cves/blob/master/cve-2020-12772/CVE-2020-12772.md
 It very well explains on how to leverage the vulnerability. Bottom line is we are sending an external url pointing to our machine which when clicked will send the user's NetNTLM hash to our **responder** listening for requests in the background.
 
 Let's do it.
-![](./images/19.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/19.png)
 
 After waiting for a while, we got buse user's hash.
-![](./images/20.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/20.png)
 
 We cracked the hash with the john.
-![](./images/21.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/21.png)
 
 ## User Shell and Second Flag
 
 Wheeeeee, we have *winrm* access now and we got a user level shell.
-![](./images/22.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/22.png)
 
-![](./images/23.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/23.png)
 
 There were nothing inside those folders and files except for few images.
-![](./images/24.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/24.png)
 
 To be honest, i have full faith on my friend @4nqr34z and i am damn sure he won't make CTF style boxes. So, i didn't bother downloading and looking into those images, haha.
 
 So, wandering through the file directories I found an interesting directory.
-![](./images/25.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/25.png)
 Hmmm, hmmm!!!
 
-![](./images/26.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/26.png)
 
 hmmmmmmm
 So, there seems to a script which runs every minute.
 What caught my eyes from the script are the below lines in it.
-![](./images/27.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/27.png)
 
 In a nutshell, it reads from the **hosts.txt** file and each line runs through **Invoke-Express**
 
@@ -198,7 +198,7 @@ Source: Microsoft docs
 So, now we need to write our commands somehow into **hosts.txt** file residing in **brittanycr**'s folder where we don't have permissions ofcourse *wink*. Those commands will get executed as **administrator**.
 
 After little enumeration, I found that we belong to the **Account Operators** group.
-![](./images/28.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/28.png)
 
 ```
 The Account Operators group grants limited account creation privileges to a user. Members of this group can create and modify most types of accounts, including those of users, local groups, and global groups, and members can log in locally to domain controllers.
@@ -207,19 +207,19 @@ Source: Microsoft Docs
 ```
 
 Let's now change the password for **brittanycr**
-![](./images/29.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/29.png)
 
 I was successfull in changing the password but she didn't have winrm access to the box. So, i tried to login to smb using the creds we just updated.
-![](./images/30.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/30.png)
 
 And then went to her home directory.
-![](./images/31.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/31.png)
 
 I updated the contents of the **hosts.txt** file with the commands to create a new user **dazzy** and added him to **Administrators** group.
-![](./images/32.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/32.png)
 
 Let's overwrite the original file with this file.
-![](./images/34.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/34.png)
 
 <br>
 
@@ -227,7 +227,7 @@ Let's overwrite the original file with this file.
 
 We were able to login as the admin user we created.
 
-![](./images/35.png)
+![](https://raw.githubusercontent.com/dazzyddos/dazzyddos.github.io/master/Images/ra/35.png)
 
 
 
